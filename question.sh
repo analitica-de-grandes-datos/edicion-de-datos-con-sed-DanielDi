@@ -41,3 +41,21 @@
 #
 #  >>> Escriba su codigo a partir de este punto <<<
 #
+#  Cambiar formato de fecha
+filename=$1
+sed -E "s|([0-9]{2})/([0-9]{2})/([0-9]{2})|20\3-\2-\1|" $filename > out2.csv;
+sed -E "s|([0-9]{1})/([0-9]{1})/([0-9]{4})|\3-0\2-0\1|" out2.csv > out3.csv;
+
+#  Cambiar nulos a \N
+sed -E -e 's/;;/;\\N;/g' out3.csv > out4.csv;
+sed -E -e 's/;(N|n|\\n)/;\\N/g' out4.csv > out5.csv;
+sed -E -e 's/\;\s*$/;\\N/' out5.csv > out6.csv;
+
+#  Cambiar decimal
+sed 's/,/\./g' out6.csv > out7.csv;
+
+#  Cambiar separador
+sed 's/;/\,/g' out7.csv > out8.csv;
+
+#  Uppercase
+sed 's/[a-z]/\U&/g' out8.csv;
